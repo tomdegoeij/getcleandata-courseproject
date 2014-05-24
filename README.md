@@ -18,7 +18,7 @@ Inner works
 `run_analysis.R` consists of the following steps:
 * Read labels from `activity_labels.txt` and `features.txt` in the UCI HAR dataset
 * Read data from `subject_test.txt`, `x_test.txt`, `y_test.txt`, `subject_train.txt`, `x_train.txt` and `y_train.txt` from UCI HAR dataset
-* Combine this data in a single data frame called `DataSet`
+* Combine this data in a single data frame called `DataSet` with appropriate column names
 * Apply labels from activity_labels.txt and features.txt to this DataSet
 * Ommit columns not containing ether `Subject`, `Activity`, a mean measurement or a standard deviation measurement bases on variable names of UCI HAR files. Only the following variables are included:
  * `Subject`

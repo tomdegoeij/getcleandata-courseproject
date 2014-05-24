@@ -4,10 +4,10 @@ Features <- read.table("UCI HAR Dataset/features.txt", col.names=c("Number", "La
 
 ## Read data from files and apply column names
 SubjectTest <- read.table("UCI HAR Dataset/test/subject_test.txt",col.names="Subject")
-XTest <- read.table("UCI HAR Dataset/test/X_test.txt", col.names=Features$Label)
+XTest <- read.table("UCI HAR Dataset/test/X_test.txt", col.names=gsub("[^a-zA-Z]", "", Features$Label, perl=TRUE))
 YTest <- read.table("UCI HAR Dataset/test/y_test.txt",col.names="Activity")
 SubjectTrain <- read.table("UCI HAR Dataset/train/subject_train.txt",col.names="Subject")
-XTrain <- read.table("UCI HAR Dataset/train/X_train.txt", col.names=Features$Label)
+XTrain <- read.table("UCI HAR Dataset/train/X_train.txt", col.names=gsub("[^a-zA-Z]", "", Features$Label, perl=TRUE))
 YTrain <- read.table("UCI HAR Dataset/train/y_train.txt",col.names="Activity")
 
 ## Combine data
