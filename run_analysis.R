@@ -1,9 +1,3 @@
-## Download data files
-##download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip","data.zip",method="curl")
-
-## Unpack data files
-##unzip("data.zip")
-
 ## Read labels from files
 ActivityLabels <- read.table("UCI HAR Dataset/activity_labels.txt",col.names=c("Number","Label"))
 Features <- read.table("UCI HAR Dataset/features.txt", col.names=c("Number", "Label"))
@@ -27,8 +21,23 @@ DataSet$Activity <- ActivityLabels$Label[match(DataSet$Activity,ActivityLabels$N
 ## Only include data on means and standard deviations
 DataSet <- DataSet[,c("Subject", "Activity", grep(".meanFreq",grep(".mean|.std", names(DataSet), value = TRUE),value=TRUE, invert=TRUE))]
 
-## Create tidy data set
-TidyDataSet <- 
+## Create empty tidy data set
+TidyDataSet <- DataSet[0,]
+
+## Split data set by subjects and activities
+DataSetSplit <- split(DataSet, list(DataSet$Subject, DataSet$Activity))
+
+## Calculate means for every combination of subjects and activities and add to tidy data set
+for (i in 1:(length(DataSetSplit))) {
+        ListItem <- colMeans(DataSetSplit[[i]][3:68],na.rm=TRUE)
+        ListItem <- cbind(DataSetSplit[[i]][1,1:2],t(as.data.frame(ListItem)))
+        TidyDataSet <- rbind(TidyDataSet,ListItem)
+}
+
+## Apply descriptive row and column names
+row.names(TidyDataSet) <- NULL
+AvgColNames <- paste("Avg",colnames(TidyDataSet), sep="")
+colnames(TidyDataSet)[3:68] <- AvgColNames[3:68]
 
 ## Remove unnecesary objects
-##rm(XTest, YTest, XTrain, YTrain, ActivityLabels,Features,SubjectTest, SubjectTrain, TotalTest, TotalTrain)
+rm(XTest, YTest, XTrain, YTrain, ActivityLabels,Features,SubjectTest, SubjectTrain, TotalTest, TotalTrain, ListItem, DataSetSplit, i, AvgColNames)
